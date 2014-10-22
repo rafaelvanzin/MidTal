@@ -1,0 +1,81 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" Inherits="SiteMaster" Codebehind="Site.master.cs" %>
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%: Page.Title %> - Midtal - Propaganda Digital</title>
+
+    <asp:PlaceHolder runat="server">
+        <%: Scripts.Render("~/bundles/modernizr") %>
+    </asp:PlaceHolder>
+    <webopt:bundlereference runat="server" path="~/Content/css" />
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+
+    <meta name="description" content="The description of my page" />
+</head>
+<body>
+    <form runat="server">
+        <ajaxToolkit:ToolkitScriptManager runat="server" EnablePageMethods="true">
+            <Scripts>
+                <%--To learn more about bundling scripts in ScriptManager see http://go.microsoft.com/fwlink/?LinkID=301884 --%>
+                <%--Framework Scripts--%>
+                <asp:ScriptReference Name="jquery" />
+                <asp:ScriptReference Name="bootstrap" />
+                <asp:ScriptReference Name="respond" />
+                <asp:ScriptReference Name="WebForms.js"  Path="~/Scripts/WebForms/WebForms.js" />
+                <asp:ScriptReference Name="WebUIValidation.js"   Path="~/Scripts/WebForms/WebUIValidation.js" />
+                <asp:ScriptReference Name="MenuStandards.js"   Path="~/Scripts/WebForms/MenuStandards.js" />
+                <asp:ScriptReference Name="GridView.js"   Path="~/Scripts/WebForms/GridView.js" />
+                <asp:ScriptReference Name="DetailsView.js"   Path="~/Scripts/WebForms/DetailsView.js" />
+                <asp:ScriptReference Name="TreeView.js"   Path="~/Scripts/WebForms/TreeView.js" />
+                <asp:ScriptReference Name="WebParts.js"   Path="~/Scripts/WebForms/WebParts.js" />
+                <asp:ScriptReference Name="Focus.js"   Path="~/Scripts/WebForms/Focus.js" />
+                <asp:ScriptReference Name="WebFormsBundle" />
+                <%--Site Scripts--%>
+            </Scripts>
+        </ajaxToolkit:ToolkitScriptManager>
+
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" runat="server" href="/">MIDTAL</a>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><asp:Hyperlink ID="menuItemPrincipal" runat="server" NavigateUrl="/">Principal</asp:Hyperlink></li>
+                        <li><asp:Hyperlink ID="menuItemMidias" runat="server" NavigateUrl="/CarregaMidia">Mídias</asp:Hyperlink></li>
+                        <li><asp:Hyperlink ID="menuItemExibicoes" runat="server" NavigateUrl="/Exibicoes">Exibições</asp:Hyperlink></li>
+                        <li><asp:Hyperlink ID="menuItemCompras" runat="server" NavigateUrl="/Compras">Compras</asp:Hyperlink></li>
+                        <li><asp:Hyperlink ID="menuItemServidores" runat="server" NavigateUrl="/Servidores">Servidores</asp:Hyperlink></li>
+                        <li><asp:Hyperlink ID="menuItemContato" runat="server" NavigateUrl="/Contato">Contato</asp:Hyperlink></li>
+                    </ul>
+                     <ul class="nav navbar-nav navbar-right" >
+                                <li><asp:Hyperlink ID="menuItemRegistre" runat="server">Cadastre-se</asp:Hyperlink></li>
+                                <li><asp:Hyperlink ID="menuItemEntrar" runat="server">"Entrar</asp:Hyperlink></li>
+                         
+                     </ul>
+                   
+                </div>
+            </div>
+        </div>
+        <div class="container body-content">
+            <asp:ContentPlaceHolder ID="MainContent" runat="server">
+               
+            </asp:ContentPlaceHolder>
+            <hr />
+            <footer>
+              
+                <p>&copy; <%: DateTime.Now.Year %> - Midtal - Todos os direitos reservados</p>
+            </footer>
+        </div>
+    </form>
+</body>
+</html>
