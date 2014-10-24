@@ -356,8 +356,8 @@ public partial class CarregaMidia : System.Web.UI.Page
     protected void visualizar_Click(object sender, EventArgs e)
     {
         string filePath = @"c:\Temp\";
-        System.Byte teste;
-        teste = Byte.Parse(hdnMidia.Text);
+        //System.Byte teste;
+        //teste = Byte.Parse(hdnMidia.Text);
         StreamWriter writer = new StreamWriter(filePath+"nome.mp4",true);
         videoStreamer.Attributes["src"] = filePath + "nome.mp4";
        ScriptManager.RegisterStartupScript(Page, typeof(Page), "Pop", "openModal();", true);
