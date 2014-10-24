@@ -81,6 +81,7 @@ public partial class CarregaMidia : System.Web.UI.Page
     {
         //define a variável
         string retorno = null;
+        string _chulipaNoRafa = null;
         // Procura pelo nome na seção  connectionStrings do app.config
         ConnectionStringSettings settings =
             ConfigurationManager.ConnectionStrings[nome];
