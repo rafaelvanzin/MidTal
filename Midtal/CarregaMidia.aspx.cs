@@ -362,7 +362,29 @@ public partial class CarregaMidia : System.Web.UI.Page
         StreamWriter writer = new StreamWriter(filePath+"nome.mp4",true);
         videoStreamer.Attributes["src"] = filePath + "nome.mp4";
        ScriptManager.RegisterStartupScript(Page, typeof(Page), "Pop", "openModal();", true);
-    
+
+       //SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["MidtalDb"].ConnectionString);
+       //con.Open();
+
+       //SqlCommand cmd = new SqlCommand("SELECT midia FROM  midia where Cod_Midia =" + hdnCodMidia.Text, con);
+       //SqlDataReader dataReader = null;
+       //dataReader = cmd.ExecuteReader();
+       //byte[] VideoByte = new byte[1];
+       //while (dataReader.Read())
+       //{
+
+       //    if (dataReader["midia"] != DBNull.Value)
+       //    {
+       //        VideoByte = (byte[])dataReader["midia"];
+       //    }
+
+       //}
+       //Response.AppendHeader("Content-Type", "video/mp4");
+       //Response.AppendHeader("Content-Length", VideoByte.Length.ToString());
+       //Response.BinaryWrite(VideoByte);
+       //Response.Flush();
+       //Response.End();
+       //con.Close();
     }
 
     protected void GridViewMidias_SelectedIndexChanged(object sender, EventArgs e)
