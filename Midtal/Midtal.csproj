@@ -69,8 +69,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\HtmlAgilityPack.1.4.9\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
-    <Reference Include="MediaInfoDotNet">
-      <HintPath>..\packages\MediaInfoDotNet.0.7.62.40921\lib\net40\MediaInfoDotNet.dll</HintPath>
+    <Reference Include="MediaInfoDotNet, Version=0.7.4694.29125, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\MediaInfoNet.0.3\lib\MediaInfoDotNet.dll</HintPath>
     </Reference>
     <Reference Include="MediaToolkit">
       <HintPath>..\packages\MediaToolkit.1.0.2.0\lib\net40\MediaToolkit.dll</HintPath>
@@ -444,7 +445,7 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\dotnet-2.1.1\source\Uol.PagSeguro\Uol.PagSeguro.csproj">
+    <ProjectReference Include="..\Uol.PagSeguro\Uol.PagSeguro.csproj">
       <Project>{babc5658-6afd-4f8e-81f1-434553663d99}</Project>
       <Name>Uol.PagSeguro</Name>
     </ProjectReference>

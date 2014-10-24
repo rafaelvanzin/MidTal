@@ -355,7 +355,7 @@ public partial class CarregaMidia : System.Web.UI.Page
     }
     protected void visualizar_Click(object sender, EventArgs e)
     {
-        string filePath = "~/Temp/";
+        string filePath = @"c:\Temp\";
         System.Byte teste;
         teste = Byte.Parse(hdnMidia.Text);
         StreamWriter writer = new StreamWriter(filePath+"nome.mp4",true);
