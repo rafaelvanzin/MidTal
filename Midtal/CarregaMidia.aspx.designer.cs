@@ -57,13 +57,22 @@ public partial class CarregaMidia {
     protected global::System.Web.UI.WebControls.Button visualizar;
     
     /// <summary>
-    /// videoStreamer control.
+    /// vidControl control.
     /// </summary>
     /// <remarks>
     /// Auto-generated field.
     /// To modify move field declaration from designer file to code-behind file.
     /// </remarks>
-    protected global::System.Web.UI.HtmlControls.HtmlVideo videoStreamer;
+    protected global::System.Web.UI.HtmlControls.HtmlVideo vidControl;
+    
+    /// <summary>
+    /// imgControl control.
+    /// </summary>
+    /// <remarks>
+    /// Auto-generated field.
+    /// To modify move field declaration from designer file to code-behind file.
+    /// </remarks>
+    protected global::System.Web.UI.HtmlControls.HtmlImage imgControl;
     
     /// <summary>
     /// hdnMidia control.

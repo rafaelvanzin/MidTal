@@ -13,6 +13,8 @@ using Midtal;
 using MediaInfoLib;
 using MediaInfoDotNet;
 using System.Web.Services;
+using System.Linq;
+using System.Web.Security;
 
 
 public partial class CarregaMidia : System.Web.UI.Page
@@ -24,17 +26,30 @@ public partial class CarregaMidia : System.Web.UI.Page
 
     protected void Page_Load(object sender, EventArgs e)
     {
-        if (!IsPostBack)BindUsers();
+        if (Session["usuariologado"] == null)
+        {
+            FormsAuthentication.RedirectToLoginPage();
+        }
+
+        if (!IsPostBack)BindMidias();
+
+        if (this.TableGrid != null)
+        {
+            this.GridViewMidias.DataSource = this.TableGrid;
+            this.GridViewMidias.DataBind();
+        }
+
+        hdnMidia.Style.Add("visibility", "hidden");
     }
   
     protected void fileUploadCompleted(object sender, AsyncFileUploadEventArgs e)
     {
         string filename = System.IO.Path.GetFileName(AsyncFileUpload1.FileName);
-              
-        
-        //AsyncFileUpload1.SaveAs(File.Create("c:/temp") + filename);
-        //AsyncFileUpload1.SaveAs(Server.MapPath("c:/") + filename);
-        string filePath = Request.PhysicalApplicationPath + AsyncFileUpload1.FileName;
+        string filePath = Request.MapPath("Temp\\" + AsyncFileUpload1.FileName);
+
+        if (File.Exists(filePath))
+            File.Delete(filePath);
+
         AsyncFileUpload1.SaveAs(filePath);
         
         try
@@ -75,7 +90,7 @@ public partial class CarregaMidia : System.Web.UI.Page
             FecharConexao();
         }
 
-
+        BindMidias();
     }
     static string GetStringConexaoPorNome(string nome)
     {
@@ -275,11 +290,51 @@ public partial class CarregaMidia : System.Web.UI.Page
             }
         }
     }
-    
-    public void BindUsers()
+
+    public DataTable TableGrid
     {
-        DataTable dt = GetUsersForModeration();
-        GridViewMidias.DataSource = dt;
+        get
+        {
+            return Session["datasourceGrid"] as DataTable;
+        }
+        set
+        {
+            Session["datasourceGrid"] = value;
+        }
+    }
+
+    public DataRow SelectedRow
+    {
+        get
+        {
+            if (!string.IsNullOrEmpty(this.hdnMidia.Text))
+            {
+                foreach (DataRow row in this.TableGrid.Rows)
+                {
+                    if (row["cod_midia"].ToString().Equals(this.hdnMidia.Text))
+                        return row;
+                }
+            }
+
+            return null;
+        }
+    }
+    
+    public void BindMidias()
+    {
+        if (TipoDeMidia.SelectedIndex == 0)
+        {
+            DataTable dt = GetUsersForModeration();
+            GridViewMidias.DataSource = dt;
+        }
+        else
+        {
+            if (TipoDeMidia.SelectedIndex == 1)
+            {
+                DataTable dt = GetUsersForModerationEP();
+                GridViewMidias.DataSource = dt;
+            }
+        }
         GridViewMidias.DataBind();
     }
     public DataTable GetUsersForModeration()
@@ -291,6 +346,9 @@ public partial class CarregaMidia : System.Web.UI.Page
         DataSet ds = new DataSet();
         SqlDataAdapter ada = new SqlDataAdapter(com);
         ada.Fill(ds);
+
+        this.TableGrid = ds.Tables[0];
+
         return ds.Tables[0];
     }
     public DataTable GetUsersForModerationEP()
@@ -302,6 +360,8 @@ public partial class CarregaMidia : System.Web.UI.Page
         DataSet ds = new DataSet();
         SqlDataAdapter ada = new SqlDataAdapter(com);
         ada.Fill(ds);
+
+        this.TableGrid = ds.Tables[0];
         
         return ds.Tables[0];
     }
@@ -318,7 +378,6 @@ public partial class CarregaMidia : System.Web.UI.Page
                DataTable dt = GetUsersForModerationEP();
                GridViewMidias.DataSource = dt;          
            }
-       
        }
        GridViewMidias.DataBind();
   
@@ -356,35 +415,67 @@ public partial class CarregaMidia : System.Web.UI.Page
     }
     protected void visualizar_Click(object sender, EventArgs e)
     {
-        string filePath = @"c:\Temp\";
-        //System.Byte teste;
-        //teste = Byte.Parse(hdnMidia.Text);
-        StreamWriter writer = new StreamWriter(filePath+"nome.mp4",true);
-        videoStreamer.Attributes["src"] = filePath + "nome.mp4";
-       ScriptManager.RegisterStartupScript(Page, typeof(Page), "Pop", "openModal();", true);
+        string extensao = this.SelectedRow["Tipo_Arquivo"].ToString();
+        string codMidia = this.hdnMidia.Text;
 
-       //SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["MidtalDb"].ConnectionString);
-       //con.Open();
+        SqlConnection con = new SqlConnection(ConfigurationManager.ConnectionStrings["MidtalDb"].ConnectionString);
+        con.Open();
 
-       //SqlCommand cmd = new SqlCommand("SELECT midia FROM  midia where Cod_Midia =" + hdnCodMidia.Text, con);
-       //SqlDataReader dataReader = null;
-       //dataReader = cmd.ExecuteReader();
-       //byte[] VideoByte = new byte[1];
-       //while (dataReader.Read())
-       //{
+        SqlCommand cmd = new SqlCommand("SELECT midia FROM  midia where Cod_Midia =" + codMidia, con);
+        SqlDataReader dataReader = null;
+        dataReader = cmd.ExecuteReader();
+        byte[] bytes = null;
+        while (dataReader.Read())
+        {
+            if (dataReader["midia"] != DBNull.Value)
+            {
+                bytes = (byte[])dataReader["midia"];
+            }
+        }
+        con.Close();
+        //
+        string filePath = Request.MapPath("Temp\\" + codMidia + "." + extensao);
+        if (File.Exists(filePath))
+            File.Delete(filePath);
 
-       //    if (dataReader["midia"] != DBNull.Value)
-       //    {
-       //        VideoByte = (byte[])dataReader["midia"];
-       //    }
+        FileStream file = File.Create(filePath);
+        file.Write(bytes, 0, bytes.Length);
+        file.Flush();
+        file.Close();
+        //
+        vidControl.Visible = false;
+        vidControl.Src = string.Empty;
+        imgControl.Visible = false;
+        imgControl.Src = string.Empty;
 
-       //}
-       //Response.AppendHeader("Content-Type", "video/mp4");
-       //Response.AppendHeader("Content-Length", VideoByte.Length.ToString());
-       //Response.BinaryWrite(VideoByte);
-       //Response.Flush();
-       //Response.End();
-       //con.Close();
+        if (extensao.Equals("mp4"))
+        {
+            vidControl.Src = "Temp/" + codMidia + "." + extensao;
+            vidControl.Visible = true;
+        }
+        else
+        {
+            imgControl.Src = "Temp/" + codMidia + "." + extensao;
+            imgControl.Visible = true;
+        }
+        
+        //
+        ScriptManager.RegisterStartupScript(this, this.GetType(), "popup", "$('#PopupMidias').show();", true);
+        //
+        //if (extensao.Equals("mp4"))
+        //{
+        //    Response.ContentType = "video/mp4";
+        //    Response.AddHeader("content-disposition", "attachment; filename=" + codMidia + "." + extensao);   
+        //}
+        //else
+        //{
+        //    Response.ContentType = "image/jpg";
+        //}
+
+        //Response.AddHeader("Content-Length", bytes.Length.ToString());
+        //Response.BinaryWrite(bytes);
+        //Response.Flush();
+        //Response.End();
     }
 
     protected void GridViewMidias_SelectedIndexChanged(object sender, EventArgs e)

@@ -22,12 +22,21 @@ namespace Midtal {
         protected global::System.Web.UI.WebControls.Literal ErrorMessage;
         
         /// <summary>
-        /// spnQuantidade control.
+        /// radioCompra control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlInputGenericControl spnQuantidade;
+        protected global::System.Web.UI.WebControls.RadioButtonList radioCompra;
+        
+        /// <summary>
+        /// grdHistorico control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView grdHistorico;
     }
 }
